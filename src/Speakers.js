@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext, useReducer, useCallback, useMemo } from 'react';
+import axios from 'axios';
 
 import { Header } from '../src/Header';
 import { Menu } from '../src/Menu';
@@ -18,7 +19,7 @@ const Speakers = ({}) => {
      * properties rather than just one "speakerList" property
      *
      */
-    const [{isLoading, speakerList}, dispatch] = useReducer(speakersReducer, {
+    const [{ isLoading, speakerList }, dispatch] = useReducer(speakersReducer, {
       isLoading: true,
       speakerList: []
     });
@@ -28,28 +29,41 @@ const Speakers = ({}) => {
      * Instead of exporting a reducer's dispatch function it is better to export a handler
      */
     function toggleSpeakerFavorite(speakerRec) {
-      speakerRec.favorite === true ?
-        dispatch({ type: 'unfavorite', id: speakerRec.id })
-        : dispatch({ type: 'favorite',  id: speakerRec.id });
+      const updateData = async function() {
+        axios.put(`http://localhost:4000/speakers/${speakerRec.id}`, speakerRec);
+        speakerRec.favorite === true ?
+          dispatch({ type: 'unfavorite', id: speakerRec.id })
+          : dispatch({ type: 'favorite',  id: speakerRec.id });
+      };
+      updateData();
     }
 
     useEffect(() => {
-      //  setIsLoading(true);
+     /* //  setIsLoading(true);
       new Promise(function (resolve) {
         setTimeout(function () {
           resolve();
         }, 1000);
       }).then(() => {
         //  setIsLoading(false);
-        /*   const speakerListServerFilter = SpeakerData.filter(({ sat, sun }) => {
+        /!*   const speakerListServerFilter = SpeakerData.filter(({ sat, sun }) => {
              return (speakingSaturday && sat) || (speakingSunday && sun);
-           });*/
+           });*!/
         // setSpeakerList(speakerListServerFilter);
         dispatch({
           type: 'setSpeakerList',
           data: SpeakerData, // speakerListServerFilter,
         });
-      });
+      });*/
+     const fetchData = async function() {
+       let result = await axios.get('http://localhost:4000/speakers');
+       dispatch({
+         type: 'setSpeakerList',
+         data: result.data,
+       });
+     };
+     fetchData();
+
       return () => {
         console.log('cleanup');
       };
