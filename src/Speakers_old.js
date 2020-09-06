@@ -10,55 +10,38 @@ import speakersReducer from './speakersReducer';
 const Speakers = ({}) => {
   const [speakingSaturday, setSpeakingSaturday] = useState(true);
   const [speakingSunday, setSpeakingSunday] = useState(true);
+
+  // *** useState is like useReducer with only a default action type ***
+  // const [speakerList, setSpeakerList] = useState([]);
+  // const [speakerList, setSpeakerList] = useReducer((state, action) => action, []);
+  // When dispatch is called, useReducer code calls speakersReducer
+  const [speakerList, dispatch] = useReducer(speakersReducer, []);
+
+  const [isLoading, setIsLoading] = useState(true);
+
   const context = useContext(ConfigContext);
 
-  function useSpeakerDataManager() {
-    /**
-     * We want to replace the state useReducer() is tracking to be an object containing multiple
-     * properties rather than just one "speakerList" property
-     *
-     */
-    const [{isLoading, speakerList}, dispatch] = useReducer(speakersReducer, {
-      isLoading: true,
-      speakerList: []
-    });
-    // const [isLoading, setIsLoading] = useState(true);
-
-    /**
-     * Instead of exporting a reducer's dispatch function it is better to export a handler
-     */
-    function toggleSpeakerFavorite(speakerRec) {
-      speakerRec.favorite === true ?
-        dispatch({ type: 'unfavorite', id: speakerRec.id })
-        : dispatch({ type: 'favorite',  id: speakerRec.id });
-    }
-
-    useEffect(() => {
-      //  setIsLoading(true);
-      new Promise(function (resolve) {
-        setTimeout(function () {
-          resolve();
-        }, 1000);
-      }).then(() => {
-        //  setIsLoading(false);
-        /*   const speakerListServerFilter = SpeakerData.filter(({ sat, sun }) => {
-             return (speakingSaturday && sat) || (speakingSunday && sun);
-           });*/
-        // setSpeakerList(speakerListServerFilter);
-        dispatch({
-          type: 'setSpeakerList',
-          data: SpeakerData, // speakerListServerFilter,
-        });
+  useEffect(() => {
+    setIsLoading(true);
+    new Promise(function (resolve) {
+      setTimeout(function () {
+        resolve();
+      }, 1000);
+    }).then(() => {
+      setIsLoading(false);
+      const speakerListServerFilter = SpeakerData.filter(({ sat, sun }) => {
+        return (speakingSaturday && sat) || (speakingSunday && sun);
       });
-      return () => {
-        console.log('cleanup');
-      };
-    }, []); // [speakingSunday, speakingSaturday]);
-
-    return { isLoading, speakerList, toggleSpeakerFavorite }; // dispatch };
-  }
-
-  const { isLoading, speakerList, toggleSpeakerFavorite } = useSpeakerDataManager();
+      // setSpeakerList(speakerListServerFilter);
+      dispatch({
+        type: 'setSpeakerList',
+        data: speakerListServerFilter,
+      });
+    });
+    return () => {
+      console.log('cleanup');
+    };
+  }, []); // [speakingSunday, speakingSaturday]);
 
   const handleChangeSaturday = () => {
     setSpeakingSaturday(!speakingSaturday);
@@ -67,9 +50,9 @@ const Speakers = ({}) => {
     setSpeakingSunday(!speakingSunday);
   };
 
-  const heartFavoriteHandler = useCallback((e, speakerRec) => {
+  const heartFavoriteHandler = useCallback((e, favoriteValue) => {
     e.preventDefault();
-    // const sessionId = parseInt(e.target.attributes['data-sessionid'].value);
+    const sessionId = parseInt(e.target.attributes['data-sessionid'].value);
     /*    setSpeakerList(
           speakerList.map((item) => {
             if (item.id === sessionId) {
@@ -78,11 +61,10 @@ const Speakers = ({}) => {
             return item;
           }),
         );*/
-    /*dispatch({
+    dispatch({
       type: favoriteValue === true ? 'favorite' : 'unfavorite',
-      id: sessionId,
-    });*/
-    toggleSpeakerFavorite(speakerRec);
+      sessionId: sessionId,
+    });
     //console.log("changing session favorite to " + favoriteValue);
   }, []);
 
@@ -143,12 +125,16 @@ const Speakers = ({}) => {
         <div className="row">
           <div className="card-deck">
             {speakerListFiltered.map(
-              (speakerRec) => {
+              ({ id, firstName, lastName, bio, favorite }) => {
                 return (
                   <SpeakerDetail
-                    key={speakerRec.id}
-                    speakerRec={speakerRec}
+                    key={id}
+                    id={id}
+                    favorite={favorite}
                     onHeartFavoriteHandler={heartFavoriteHandler}
+                    firstName={firstName}
+                    lastName={lastName}
+                    bio={bio}
                   />
                 );
               },
