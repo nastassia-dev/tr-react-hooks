@@ -1,10 +1,8 @@
 import React from 'react';
+import App from '../src/App';
 
-const InputElement = () => {
-  return (
-    <input
-       placeholder="Enter Some Text" />
-  );
-};
+function index() {
+  return <App pageName="Home" />;
+}
 
-export default InputElement;
+export default index;
