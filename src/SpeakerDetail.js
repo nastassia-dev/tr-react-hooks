@@ -2,6 +2,7 @@ import ImageToggleOnScroll from './ImageToggleOnScroll';
 import useSpeakerDataManager from './useSpeakerDataManager';
 import { useContext } from 'react';
 import { GlobalContext } from './GlobalState';
+import { FavoriteClickCountContext } from './FavoriteClickCountContext';
 
 const SpeakerDetail = React.memo(({
   speakerRec,
@@ -13,7 +14,8 @@ const SpeakerDetail = React.memo(({
   // const { favoriteClickCount, incrementFavoriteClickCount } = useSpeakerDataManager();
 
  //  const { favoriteClickCount: count, incrementFavoriteClickCount: incrementCount } = useContext(GlobalContext);
-  const { incrementFavoriteClickCount: incrementCount } = useContext(GlobalContext);
+ // const { incrementFavoriteClickCount: incrementCount } = useContext(GlobalContext);
+  const { incrementFavoriteClickCount: incrementCount } = useContext(FavoriteClickCountContext);
 
   return (
     <div className="card col-4 cardmin">
