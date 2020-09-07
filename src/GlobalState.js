@@ -9,7 +9,9 @@ export const GlobalProvider = ({ children }) => {
     speakerList,
     favoriteClickCount,
     incrementFavoriteClickCount,
-    toggleSpeakerFavorite
+    toggleSpeakerFavorite,
+    hasErrored,
+    error,
   } = useSpeakerDataManager();
 
   const provider = {
@@ -18,6 +20,8 @@ export const GlobalProvider = ({ children }) => {
     favoriteClickCount,
     incrementFavoriteClickCount,
     toggleSpeakerFavorite,
+    hasErrored,
+    error,
   };
   return (
     <GlobalContext.Provider value={provider}>
