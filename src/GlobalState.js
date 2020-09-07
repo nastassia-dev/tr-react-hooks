@@ -4,11 +4,19 @@ import useSpeakerDataManager from './useSpeakerDataManager';
 export const GlobalContext = React.createContext();
 
 export const GlobalProvider = ({ children }) => {
-  const { isLoading, speakerList, toggleSpeakerFavorite } = useSpeakerDataManager();
+  const {
+    isLoading,
+    speakerList,
+    favoriteClickCount,
+    incrementFavoriteClickCount,
+    toggleSpeakerFavorite
+  } = useSpeakerDataManager();
 
   const provider = {
     isLoading,
     speakerList,
+    favoriteClickCount,
+    incrementFavoriteClickCount,
     toggleSpeakerFavorite,
   };
   return (

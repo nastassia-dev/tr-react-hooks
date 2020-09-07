@@ -31,7 +31,7 @@
       "id": 1269,
       "firstName": "Arun",
       "lastName": "Gupta",
-      "favorite": false,
+      "favorite": true,
       "bio": "Arun Gupta is a Principal Open Source Technologist at Amazon Web Services. He has built and led developer communities for 12+ years at Sun, Oracle, Red Hat and Couchbase.",
       "sat": false,
       "sun": true
@@ -40,7 +40,7 @@
       "id": 1725,
       "firstName": "Brad",
       "lastName": "Irby",
-      "favorite": false,
+      "favorite": true,
       "bio": "Brad is an accomplished .NET software architect specializing in Domain Driven Design and Event Driven Architectures.",
       "sat": true,
       "sun": false
@@ -51,14 +51,14 @@
       "lastName": "McDowell",
       "sat": true,
       "sun": false,
-      "favorite": false,
+      "favorite": true,
       "bio": "Gayle Laakmann McDowell is the founder and CEO of CareerCup.com and the author of three best selling books."
     },
     {
       "id": 187,
       "firstName": "Dave",
       "lastName": "Nielsen",
-      "favorite": false,
+      "favorite": true,
       "bio": "As Head of Ecosystem Programs, Dave uses emerging technologies and open source projects like Microservices, Serverless & Kubernetes to bring the magic of Redis to the broader community.",
       "sat": true,
       "sun": true

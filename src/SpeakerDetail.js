@@ -1,4 +1,7 @@
 import ImageToggleOnScroll from './ImageToggleOnScroll';
+import useSpeakerDataManager from './useSpeakerDataManager';
+import { useContext } from 'react';
+import { GlobalContext } from './GlobalState';
 
 const SpeakerDetail = React.memo(({
   speakerRec,
@@ -6,6 +9,12 @@ const SpeakerDetail = React.memo(({
 }) => {
   const { id, firstName, lastName, bio, favorite } = speakerRec;
   console.log(`SpeakerDetail:${id} ${firstName} ${lastName} ${favorite}`);
+  // ***Each speaker gets its own independent state because of the instantiation below
+  // const { favoriteClickCount, incrementFavoriteClickCount } = useSpeakerDataManager();
+
+ //  const { favoriteClickCount: count, incrementFavoriteClickCount: incrementCount } = useContext(GlobalContext);
+  const { incrementFavoriteClickCount: incrementCount } = useContext(GlobalContext);
+
   return (
     <div className="card col-4 cardmin">
       <ImageToggleOnScroll
@@ -20,13 +29,14 @@ const SpeakerDetail = React.memo(({
             className={favorite ? 'heartredbutton' : 'heartdarkbutton'}
             onClick={(e) => {
               onHeartFavoriteHandler(e, speakerRec);
+              incrementCount();
             }}
           />
           <span>
             {firstName} {lastName}
           </span>
         </h4>
-
+        {/*<h5>Click count: {count}</h5>*/}
         <span>{bio}</span>
       </div>
     </div>
